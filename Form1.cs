@@ -28,5 +28,18 @@ namespace CRUDSederhana
         {
             LoadData();
         }
+
+        private void ClearForm()
+        {
+            txtNIM.Clear();
+            txtNama.Clear();
+            txtEmail.Clear();
+            txtTelepon.Clear();
+            txtAlamat.Clear();
+
+            //Fokus kembali kenim  agar user siap memasukkan data baru
+            txtNIM.Focus();
+        }
     }
-    }
+}
+  
