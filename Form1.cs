@@ -15,5 +15,9 @@ namespace CRUDSederhana
     {
         static string connectionString = string.Format(
             "Server=127.0.0.1; database = organisasiMahasiswa; UID = root; Password = mariskacan10");
+        public Form1()
+        {
+            InitializeComponent();
+        }
     }
-}
+    }
