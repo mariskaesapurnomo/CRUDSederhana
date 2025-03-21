@@ -339,9 +339,26 @@ namespace CRUDSederhana
                 MessageBoxIcon.Information
                 );
         }
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dgvMahasiswa.Rows[e.RowIndex];
+
+                //Coba gunakan indeks jika "NIM" tidak ditemukan
+                txtNIM.Text = row.Cells[0].Value.ToString();
+                txtNama.Text = row.Cells[0].Value.ToString();
+                txtEmail.Text = row.Cells[0].Value.ToString();
+                txtTelepon.Text = row.Cells[0].Value.ToString();
+                txtAlamat.Text = row.Cells[0].Value.ToString();
+
+            }
+        }
     }
 }
-        
+
+
+
 
 
 
