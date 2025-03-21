@@ -67,6 +67,204 @@ namespace CRUDSederhana
             }
         }
 
+        private void btnTambah_Click(object sender, EventArgs e)
+        {
+            MySqlConnection connn = new MySqlConnection(connectionString);
+            try
+            {
+                if (txtNIM.Text == "" || txtNama.Text == "" || txtEmail.Text == "" || txtTelepon.Text == "")
+                {
+                    MessageBox.Show(
+                        "Harap isi semua data!", "Peringatan",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Warning
+                       );
+                    return;
+                }
+                connn.Open();
+                string query = "insert into (NIM, Nama, Email, Telepon, " +
+                    "Alamat) values (@NIM, @Nama, @Email, @Telepon, " +
+                    "@Alamat";
+                MySqlCommand cmd = new MySqlCommand(query, connn);
+                cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
+                cmd.Parameters.AddWithValue("@Nama", txtNama.Text);
+                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@Telepon", txtTelepon.Text);
+                cmd.Parameters.AddWithValue("@Alamat", txtAlamat.Text);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show(
+                        "Data berhasil ditambahkan!", "Sukses",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                        );
+                    LoadData();
+                    ClearForm();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Data tidak berhasil ditambahkan!", "Kesalahan",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                        );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error: " +
+                    ex.Message, "Kesalahan",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                    );
+            }
+        }
+
+        private void btnHapus_Click(object sender, EventArgs e)
+        {
+            if (dgvMahasiswa.SelectedRows.Count > 0)
+            {
+                DialogResult confirm = MessageBox.Show(
+                    "Yakin ingin menghapus data ini?", "Konfirmasi",
+                    MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (confirm == DialogResult.Yes)
+                {
+                    MySqlConnection conn = new MySqlConnection(connectionString);
+                    try
+                    {
+                        string NIM = dgvMahasiswa.SelectedRows[0].Cells["NIM"].Value.ToString();
+                        conn.Open();
+                        string query = "delete from mahasiswa " +
+                            "where NIM = @NIM";
+                        MySqlCommand cmd = new MySqlCommand(query, conn);
+                        cmd.Parameters.AddWithValue("@NIM", NIM);
+                        int rowsAffected = cmd.ExecuteNonQuery();
+                        if (rowsAffected > 0)
+                        {
+                            MessageBox.Show(
+                                "Data berhasil dihapus!", "Sukses",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Information
+                                );
+                            LoadData();
+                            ClearForm();
+                        }
+                        else
+                        {
+                            MessageBox.Show(
+                                "Data tidak ditemukan atau gagal dihapus!", "Kesalahan",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Error
+                                );
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(
+                            "Error: " +
+                            ex.Message, "Kesalahan",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error
+                            );
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Pilih data yang akan dihapus!", "Peringatan",
+                    MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void btnRefresh_Click(object sender, EventArgs e)
+        {
+            LoadData();
+
+            //Debugging: Cek Jumlah Kolom dan Baris
+            MessageBox.Show(
+                $"Jumlah Kolom:{dgvMahasiswa.ColumnCount}\n" +
+                $"Jumlah Baris:{dgvMahasiswa.RowCount}",
+                "Debugging DataGridView",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Information
+                );
+        }
+
+        private void dgvMahasiswa_cellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dgvMahasiswa.Rows[e.RowIndex];
+
+                //Coba gunakan indeks jika "NIM" tidak ditemukan
+                txtNIM.Text = row.Cells[0].Value.ToString();
+                txtNama.Text = row.Cells[0].Value.ToString();
+                txtEmail.Text = row.Cells[0].Value.ToString();
+                txtTelepon.Text = row.Cells[0].Value.ToString();
+                txtAlamat.Text = row.Cells[0].Value.ToString();
+
+            }
+        }
+
+        private void btnTambah_Click_1(object sender, EventArgs e)
+        {
+            MySqlConnection connn = new MySqlConnection(connectionString);
+            try
+            {
+                if (txtNIM.Text == "" || txtNama.Text == "" || txtEmail.Text == "" || txtTelepon.Text == "")
+                {
+                    MessageBox.Show(
+                        "Harap isi semua data!", "Peringatan",
+                       MessageBoxButtons.OK,
+                       MessageBoxIcon.Warning
+                       );
+                    return;
+                }
+                connn.Open();
+                string query = "INSERT INTO Mahasiswa (NIM, Nama, Email, Telepon, Alamat) " +
+               "VALUES (@NIM, @Nama, @Email, @Telepon, @Alamat)";
+
+                MySqlCommand cmd = new MySqlCommand(query, connn);
+                cmd.Parameters.AddWithValue("@NIM", txtNIM.Text);
+                cmd.Parameters.AddWithValue("@Nama", txtNama.Text);
+                cmd.Parameters.AddWithValue("@Email", txtEmail.Text);
+                cmd.Parameters.AddWithValue("@Telepon", txtTelepon.Text);
+                cmd.Parameters.AddWithValue("@Alamat", txtAlamat.Text);
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+                if (rowsAffected > 0)
+                {
+                    MessageBox.Show(
+                        "Data berhasil ditambahkan!", "Sukses",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Information
+                        );
+                    LoadData();
+                    ClearForm();
+                }
+                else
+                {
+                    MessageBox.Show(
+                        "Data tidak berhasil ditambahkan!", "Kesalahan",
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error
+                        );
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(
+                    "Error: " +
+                    ex.Message, "Kesalahan",
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error
+                    );
+            }
+        }
+
     }
 }
 
